@@ -22,15 +22,22 @@
 
 ; нула
 (define czero
-  void)
+  (lambda (f)
+    (lambda (v)
+      v)))
 
 ; едно
 (define cone
-  void)
+  (lambda (f)
+    (lambda (v)
+      (f v))))
 
 ; две
 (define ctwo
-  void)
+  (lambda (f)
+    (lambda (v)
+      (f (f v)))))
+
 
 ; ПРИМЕРИ
 (define 1+ (lambda (n) (+ 1 n)))
@@ -39,12 +46,15 @@
 
 ; обръщане от и до
 (define (nat-to-scm n)
-  void)
+  ((n 1+) 0))
 
 ; разписване
 
 (define csucc
-  void)
+  (lambda (n)
+    (lambda (f)
+      (lambda (v)
+        (f ((n f) v))))))
 
 ; разписване
 
@@ -55,16 +65,35 @@
 
 ; грешно нарочно?
 (define (nat-from-scm n)
-  void)
+  (if (= 0 n)
+      czero
+      (csucc (nat-from-scm (- n 1)))))
 
 ; "директен" vs "недиректен" подход
 (define cplus
-  void)
+  (lambda (n)
+    (lambda (m)
+      (lambda (f)
+        (lambda (v)
+          ((n f) ((m f) v)))))))
+
+; (nat-to-scm ((cplus ctwo) ctwo))
+;n = cone = \f.\v. (f v)
+;m = ctwo = \f.\v. (f (f v))
+;cplus n m
+;->
+;\f.\v. cone f ctwo ->
+;\f.\v. f ctwo ->
+;
+;\f.\v. f (f (f v))
+
 
 ; разписване?
 
 (define cplus-another
-  void)
+  (lambda (n)
+    (lambda (m)
+      ((n csucc) m))))
 
 ; (nat-to-scm ((cplus (nat-from-scm 5)) (nat-from-scm 15)))
 ; (nat-to-scm ((cplus-another (nat-from-scm 5)) (nat-from-scm 15)))
@@ -74,52 +103,81 @@
 
 ; show lists as a parallel with natural numbers
 ; in haskell
-;data Nat = Zero | Succ Nat
+; data Nat = Zero | Succ Nat
 ;
-;Zero
+; Zero
 ;
-;(lambda (f)
-;  (lambda (v)
-;    v))
+; (lambda (f)
+;   (lambda (v)
+;     v))
 ;
 ;
-;(Succ (Succ (Succ Zero)))
+;  (Succ (Succ (Succ Zero)))
 ;
-;(lambda (f)
-;  (lambda (v)
-;    (f (f (f v)))))
+;  (lambda (f)
+;    (lambda (v)
+;      (f    (f    (f    v)))))
+;       Succ (Succ (Succ Zero)
 ;
 ;
 ;data List = Nil | Cons Int List
 ;
-;Nil
+; Nil
 ;
-;(lambda (f)
-;  (lambda (v)
-;    v))
+; k*
+; (lambda (f)
+;   (lambda (v)
+;     v))
 ;
+; Succ Zero
 ;
-;(Cons 0 Nil)
-;
-;(lambda (f)
-;  (lambda (v)
-;    (f 0 v)))
+; (Cons 0 Nil)
+
+; (lambda (f)
+;   (lambda (v)
+;     (f czero v)))
 ;
 ;
 ;(Cons 0 (Cons 1 (Cons 2 Nil)))
-;
-;(lambda (f)
-;  (lambda (v)
-;    (f 0 (f 1 (f 2 v)))))
+
+; (lambda (f)
+;   (lambda (v)
+;     ((f   0) ((f   1) ((f   2) v)))))
+;     (Cons 0  (Cons 1  (Cons 2  Nil)))
 
 (define cnil
-  void)
+  (lambda (f)
+    (lambda (v)
+      v)))
+
+; (ccons cnil 1 ->
+(lambda (f)
+  (lambda (v)
+    ((f 1) v)))
+; ((ccons 2) ((ccons 1) nil)) ->
+(lambda (f)
+  (lambda (v)
+    ((f 2) ((f 1) v))))
 
 (define ccons
-  void)
+  (lambda (x)
+    (lambda (xs)
+      (lambda (f)
+        (lambda (v)
+          ((f x) ((xs f) v)))))))
+
+; 1 2 3 -> 6
+; '(1 2 3)
+
+; ((+) 1 ((+) 2 ((+) 3 0)))
+; (f   1 (f   2 (f   3 v)))
+; f -> cplus
+; v -> czero
 
 (define csum
-  void)
+  (lambda (xs)
+    ((xs cplus) czero)))
+
 
 ; =====================
 ; Нумерали на Чърч
@@ -139,7 +197,7 @@
 ; (nat-to-scm ((cexp (nat-from-scm 3)) (nat-from-scm 1))) -- 3
 ; (nat-to-scm ((cexp (nat-from-scm 2)) (nat-from-scm 10))) -- 1024
 ; (nat-to-scm ((cexp (nat-from-scm 0)) (nat-from-scm 10))) -- 0
-; (nat-to-scm ((cexp (nat-from-scm 30)) (nat-from-scm 0))) -- 0
+; (nat-to-scm ((cexp (nat-from-scm 30)) (nat-from-scm 0))) -- 1
 (define cexp
   void)
 
