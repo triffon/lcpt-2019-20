@@ -83,3 +83,47 @@
 (define c/2
   (lambda (n)
     ((n cnot) ctrue)))
+
+;; (Succ (Succ (Succ Zero)))
+
+(define constr-zero 'Zero)
+(define constr-succ (lambda (x) (list 'Succ x)))
+
+(define ccons
+  (lambda (x)
+    (lambda (y)
+      (lambda (z)
+        ((z x) y)))))
+
+(define ccar
+  (lambda (p) (p ctrue)))
+
+(define ccdr
+  (lambda (p) (p cfalse)))
+
+(define (printpn p)
+  (p (lambda (x)
+       (lambda (y)
+         (cons (printn x) (printn y))))))
+
+(define cp
+  (lambda (n)
+    (ccdr
+     ((n
+       (lambda (p)
+         ((ccons
+           (cs (ccar p)))
+          (ccar p))))
+      ((ccons c0) c0)))))
+
+(define c!
+  (lambda (n)
+    (ccdr
+     ((n
+       (lambda (p)
+         ((ccons
+           (cs (ccar p)))
+          ((c* (cs (ccar p)))
+           (ccdr p)))))
+      ((ccons c0) c1)))))
+
