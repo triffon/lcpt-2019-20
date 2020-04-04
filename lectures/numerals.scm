@@ -127,3 +127,13 @@
            (ccdr p)))))
       ((ccons c0) c1)))))
 
+(define (repeat-inf gamma)
+  (lambda (f)
+    (lambda (n)
+      ((gamma ((repeat-inf gamma) f)) n))))
+
+(define (empty n) 'error)
+
+(define gamma-fact (lambda (f) (lambda (n) (if (= 0 n) 1 (* n (f (- n 1)))))))
+
+(define fact ((repeat-inf gamma-fact) empty))
