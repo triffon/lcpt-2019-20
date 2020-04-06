@@ -319,9 +319,9 @@
 ; УПРАЖНЕНИЕ: Генериране на списък с нумералите от подадения нумерал до cnil
 ; (редът не е задължително да е нарастващ или намаляващ)
 ; ПРИМЕРИ:
-; (nat-to-scm (clength (cto-zero (nat-from-scm 13)))) -- 13
-; (map nat-to-scm (list-to-scm (cto-zero (nat-from-scm 10)))) -- '(10 9 8 7 6 5 4 3 2 1)
-; (map nat-to-scm (list-to-scm (cto-zero (nat-from-scm 0)))) -- '()
+; (nat-to-scm (clength (cto-zero (nat-from-scm n)))) -- n
+; (map nat-to-scm (list-to-scm (cto-zero (nat-from-scm 10)))) -- '(9 8 7 6 5 4 3 2 1 0)
+; (list-to-scm (cto-zero (nat-from-scm 0))) -- '()
 (define cto-zero
   void)
 ; HINT:
