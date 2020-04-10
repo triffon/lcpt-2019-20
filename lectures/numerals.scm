@@ -137,3 +137,48 @@
 (define gamma-fact (lambda (f) (lambda (n) (if (= 0 n) 1 (* n (f (- n 1)))))))
 
 (define fact ((repeat-inf gamma-fact) empty))
+
+(define Y
+  (lambda (F)
+    ((lambda (x) (F (x x)))
+     (lambda (x) (F (x x))))))
+
+(define c=0
+  (lambda (n)
+    ((n (lambda (k) cfalse)) ctrue)))
+
+(define I (lambda (x) x))
+
+(define g!
+  (lambda (F)
+    (lambda (n)
+      (((c=0 n) c1)
+       ((c* n) (F (cp n)))))))
+
+(define cfake!
+  (lambda (n)
+    ((((cs n) g!) I) n)))
+
+;; !!!
+;; (define c!!
+;;  (Y g!))
+
+(define Z
+  (lambda (F)
+    ((lambda (x) (F (lambda (y) ((x x) y))))
+     (lambda (x) (F (lambda (y) ((x x) y)))))))
+
+(define c!!
+  (Z g!))
+
+(define fif (lambda (b x y) (if b x y)))
+
+;; !!!! (c!! c0)
+
+(define g!!
+  (lambda (F)
+    (lambda (n)
+      (((c=0 n) c1)
+       (lambda (y) (((c* n) (F (cp n))) y))))))
+
+(define c!!! (Z g!!))
