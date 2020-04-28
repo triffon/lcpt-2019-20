@@ -39,10 +39,10 @@ isIType(arr(α, α)).
 isKType(arr(α, arr(β, α))).
 isKsType(arr(β, arr(α, α))).
 
-types(Γ, isa(X, Τ))                 :- member(isa(X, Τ), Γ).
+types(Γ, Decl)                      :- member(Decl, Γ).
 types(Γ, isa(app(M1, M2), Σ))       :- types(Γ, isa(M1, arr(Ρ, Σ))),
                                        types(Γ, isa(M2, Ρ)).
-types(Γ, isa(λ(X, N), arr(Ρ, Σ)))   :- types([ isa(X, Ρ) | Γ ], isa(N, Σ)).
+types(Γ, isa(λ(X, N), arr(Ρ, Σ)))   :- not(member(isa(X, _), Γ)), types([ isa(X, Ρ) | Γ ], isa(N, Σ)).
 
 types(isa(M, Τ))                    :- types([], isa(M, Τ)).
 typeable(M)                         :- types(isa(M, _)).
