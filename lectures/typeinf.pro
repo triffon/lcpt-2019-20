@@ -39,10 +39,17 @@ isIType(arr(α, α)).
 isKType(arr(α, arr(β, α))).
 isKsType(arr(β, arr(α, α))).
 
+% използваме така
+% types(+Γ, isa(+M, ?Τ))
+
+% може ли да се използва така:
+% types(+Γ, isa(-M, +Τ))
+
 types(Γ, Decl)                      :- member(Decl, Γ).
 types(Γ, isa(app(M1, M2), Σ))       :- types(Γ, isa(M1, arr(Ρ, Σ))),
                                        types(Γ, isa(M2, Ρ)).
-types(Γ, isa(λ(X, N), arr(Ρ, Σ)))   :- not(member(isa(X, _), Γ)), types([ isa(X, Ρ) | Γ ], isa(N, Σ)).
+types(Γ, isa(λ(X, N), arr(Ρ, Σ)))   :- not(member(isa(X, _), Γ)),
+                                       types([ isa(X, Ρ) | Γ ], isa(N, Σ)).
 
 types(isa(M, Τ))                    :- types([], isa(M, Τ)).
 typeable(M)                         :- types(isa(M, _)).
