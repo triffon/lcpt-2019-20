@@ -21,6 +21,8 @@ cases Ff s t = t
 y :: (τ -> τ) -> τ
 y t = t (y t)
 
+-------------------------------------
+
 toInt :: N -> Int
 toInt O     = 0
 toInt (S n) = 1 + toInt n
@@ -47,3 +49,7 @@ mult = y . γmult
 γfact :: (N -> N) -> N -> N
 γfact f n = cases (z n) (S O) (mult n (f (p n)))
 fact = y γfact
+
+eq :: N -> N -> B
+eq = y (\f m n -> cases (z m) (z n)
+                  (cases (z n) Ff (f (p m) (p n))))

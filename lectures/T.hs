@@ -47,3 +47,6 @@ fact :: N -> N
 fact n = r n (S O) (\n1 p -> mult (S n1) p)
 -- n1 == n - 1
 -- p == fact n1 = (n-1)!
+
+eq :: N -> N -> B
+eq m = r m z (\_ p n -> r n Ff (\n1 _ -> p n1))
