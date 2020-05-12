@@ -14,6 +14,8 @@ r :: N -> τ -> (N -> τ -> τ) -> τ
 r O     s t = s
 r (S n) s t = t n (r n s t)
 
+-------------------------------------
+
 toInt :: N -> Int
 toInt O     = 0
 toInt (S n) = 1 + toInt n
@@ -44,7 +46,8 @@ mult m n = r m O (\_ -> plus n)
 -- p  == mult m1 n == (m - 1) * n
 
 fact :: N -> N
-fact n = r n (S O) (\n1 p -> mult (S n1) p)
+-- fact n = r n (S O) (\n1 p -> mult (S n1) p)
+fact n = r n (S O) (mult . S)
 -- n1 == n - 1
 -- p == fact n1 = (n-1)!
 
