@@ -175,32 +175,30 @@ module 02-agda where
 --
 ---- EXERCISE: == is symmetric
 --==-symm : {A : Set} {x y : A} -> x == y -> y == x
---==-symm refl = refl
+--==-symm = ?
 --
 ---- EXERCISE: == is transitive
 --==-trans : {A : Set} {x y z : A} -> x == y -> y == z -> x == z
---==-trans refl refl = refl
+--==-trans = ?
 --
 ---- EXERCISES Nats
 --
 ---- EXERCISE: suc is injective
 --suc-inj : {n m : Nat} -> suc n == suc m -> n == m
---suc-inj refl = refl
+--suc-inj = ?
 --
 ---- EXERCISE: <=-trans
 --<=-trans : {n m k : Nat} -> n <= m -> m <= k -> n <= k
---<=-trans ozero m<=k = ozero
---<=-trans (osuc n<=m) (osuc m<=k) = osuc (<=-trans n<=m m<=k)
+--<=-trans = ?
 --
 ---- EXERCISE: suc n is not less than or equal to n
 --suc-suc-not-<= : {n : Nat} -> suc n <= n -> Zero
---suc-suc-not-<= (osuc p) = suc-suc-not-<= p
+--suc-suc-not-<= = ?
 --
 ---- EXERCISE: <= proofs are unique
 ---- use ap or rewrite!
 --<=-unique : {n m : Nat} -> (p1 p2 : n <= m) -> p1 == p2
---<=-unique ozero ozero = refl
---<=-unique (osuc p1) (osuc p2) = ap osuc (<=-unique p1 p2)
+--<=-unique = ?
 --
 ---- lists
 --
@@ -214,8 +212,7 @@ module 02-agda where
 ---- Define list appending
 ---- HINT: look at +N if you haven't done this before
 --_+L_ : {A : Set} -> List A -> List A -> List A
---[] +L ys = ys
---(x ,- xs) +L ys = x ,- (xs +L ys)
+--xs +L ys = ?
 --
 --infixr 30 _+L_
 --
@@ -225,46 +222,40 @@ module 02-agda where
 ---- x +L xs == xs and xs +L x == xs
 ---- TODO: delete []
 --+L-left-id : {A : Set} (xs : List A) -> [] +L xs == xs
---+L-left-id xs = refl
+--+L-left-id = ?
 --
 --+L-right-id : {A : Set} (xs : List A) -> xs +L [] == xs
---+L-right-id [] = refl
---+L-right-id (x ,- xs) = ap (x ,-_) (+L-right-id xs)
+--+L-right-id = ?
 --
 ---- EXERCISE:
 ---- +L is associative
 ---- HINT: look at +N-assoc
 --+L-assoc : {A : Set} (xs ys zs : List A) -> (xs +L ys) +L zs == xs +L (ys +L zs)
---+L-assoc [] ys zs = refl
---+L-assoc (x ,- xs) ys zs = ap (x ,-_) (+L-assoc xs ys zs)
+--+L-assoc = ?
 --
 ---- EXERCISE: list map
 ---- define map for lists - apply a function to every argument
 --map : {A B : Set} -> (A -> B) -> List A -> List B
---map f [] = []
---map f (x ,- xs) = f x ,- map f xs
+--map = ?
 --
 ---- EXERICSE: mapping id is the same as just id
 --map-id-is-id : {A : Set} -> (xs : List A) -> map id xs == xs
---map-id-is-id [] = refl
---map-id-is-id (x ,- xs) = ap (x ,-_) (map-id-is-id xs)
+--map-id-is-id = ?
 ---- Note: we apply the argument to avoid extensionality issues
 --
 ---- left-to-right composition
 --_<<_ : {A B C : Set} -> (B -> C) -> (A -> B) -> A -> C
---(f << g) x = f (g x)
+--(f << g) x = ?
 --
 ---- EXERCISE: mapping a composition is the same as composing mappings
 ---- <SPC> u <SPC> u <other-command>
 ---- might be useful here
 --map-compose : {A B C : Set} (f : B -> C) (g : A -> B) (xs : List A) -> map (f << g) xs == (map f << map g) xs
---map-compose f g [] = refl
---map-compose f g (x ,- xs) = ap (f (g x) ,-_) (map-compose f g xs)
+--map-compose = ?
 --
 ---- EXERCISE: mapping after appending is the same as first mapping and then appending
 --map-distrib-+L : {A B : Set} (f : A -> B) (xs ys : List A) -> map f (xs +L ys) == map f xs +L map f ys
---map-distrib-+L f [] ys = refl
---map-distrib-+L f (x ,- xs) ys = ap (f x ,-_) (map-distrib-+L f xs ys)
+--map-distrib-+L = ?
 --
 ---- EXERCISE: length-indexed lists - vectors
 ---- "lists that know their length"
@@ -276,21 +267,19 @@ module 02-agda where
 ---- EXERCISE: We can now define a safe head and tail - you can't call them with []
 ---- Compare this to the default ones in haskell, that can throw exceptions
 --vhead : {A : Set} {n : Nat} -> Vector A (suc n) -> A
---vhead (x ,- xs) = x
+--vhead = ?
 --
 --vtail : {A : Set} {n : Nat} -> Vector A (suc n) -> Vector A n
---vtail (x ,- xs) = xs
+--vtail = ?
 --
 ---- EXERCISE: We can also define "safe" take, that does not "overshoot"
 ---- Note how we don't need to pass n explicitly, because n <= m holds this information already
 --vtake : {A : Set} {n m : Nat} -> n <= m -> Vector A m -> Vector A n
---vtake ozero xs = []
---vtake (osuc n<=m) (x ,- xs) = x ,- vtake n<=m xs
+--vtake = ?
 --
 ---- EXERCISE: Our zip is also "safe" in that we don't lose any information from either vector
 --vzip : {A B : Set} {n : Nat} -> Vector A n -> Vector B n -> Vector (A * B) n
---vzip [] [] = []
---vzip (x ,- xs) (y ,- ys) = (x , y) ,- vzip xs ys
+--vzip = ?
 --
 ---- EXERCISE: Append vectors
 ---- What type should this function have?
@@ -300,8 +289,7 @@ module 02-agda where
 ---- N.B.! you need to pattern match on the left number here, because otherwise agda doesn't know
 ---- what cases could be possible for the vector
 --vsplit : {A : Set} (n m : Nat) -> Vector A (n +N m) -> Vector A n * Vector A m
---vsplit zero m xs = [] , xs
---vsplit (suc n) m (x ,- xs) = (x ,- fst (vsplit n m xs)) , (snd (vsplit n m xs))
+--vsplit = ?
 --
 ---- EXERCISE: Appending two vectors and then splitting them should yield the original two vectors!
 ---- What type should this have?
@@ -309,8 +297,7 @@ module 02-agda where
 --
 ---- EXERCISE: you can also suc on the right in +N
 --+N-right-suc : (n m : Nat) -> suc (n +N m) == n +N suc m
---+N-right-suc zero m = refl
---+N-right-suc (suc n) m = ap suc (+N-right-suc n m)
+--+N-right-suc = ?
 --
 ---- EXERCISE: +N is commutative
 ---- prove lemmas if something seems too hard!
@@ -319,29 +306,24 @@ module 02-agda where
 ---- use ==-symm and +N-right-zero in the base case
 ---- and +N-right-suc in the recursive case (+ rewrite or ap + ==-trans)
 --+N-commut : (n m : Nat) -> n +N m == m +N n
---+N-commut zero m = ==-symm (+N-right-zero m)
---+N-commut (suc n) m rewrite +N-commut n m | +N-right-suc m n = refl
+--+N-commut = ?
 --
 ---- EXERCISE: multiplication
 ---- use addition
 --_*N_ : Nat -> Nat -> Nat
---zero *N m = zero
---suc n *N m = m +N n *N m
+--n *N m = ?
 --infixr 40 _*N_
 --
 ---- EXERCISE: multiplication right identity
 --*N-right-id : (n : Nat) -> n *N 1 == n
---*N-right-id zero = refl
---*N-right-id (suc n) rewrite *N-right-id n = refl
+--*N-right-id = ?
 --
 ---- EXERCISE: multiplication distributes over addition
 ---- HINT: use rewrite and ==-symm + +N-assoc in the recursive case
 --*N-distrib-+N : (n m k : Nat) -> (n +N m) *N k == n *N k +N m *N k
---*N-distrib-+N zero m k = refl
---*N-distrib-+N (suc n) m k rewrite *N-distrib-+N n m k | ==-symm (+N-assoc k (n *N k) (m *N k)) = refl
+--*N-distrib-+N = ?
 --
 ---- EXERCISE: multiplication is associative
 ---- HINT: user *N-+N-distrib and rewrite
 --*N-assoc : (n m k : Nat) -> (n *N m) *N k == n *N (m *N k)
---*N-assoc zero m k = refl
---*N-assoc (suc n) m k rewrite *N-distrib-+N m (n *N m) k | *N-assoc n m k = refl
+--*N-assoc = ?
