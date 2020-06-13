@@ -1,6 +1,6 @@
 {-# OPTIONS --no-unicode #-} -- turn off automatic unicode insertion
 
-module 02-agda where
+module 02-agda-end where
 
 -------------------------------------------------------------------------------------------------------
 -- ADDITIONAL RESOURCES |
